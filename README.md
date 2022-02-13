@@ -14,7 +14,21 @@ docker run -p8080:8080 --gpus all --rm -it devforth/gpt-j-6b-gpu
 
 > Though for apu we are using async FastAPI web server, calls to model which generate a text are blocking, so you should not expect parallelism from this webserver
 
-Then you can call model by using rest API:
+Then you can call model by using REST API:
+
+```
+POST http://yourServerPublicIP:8080/generate/
+Content-Type: application/json
+Body: 
+
+{
+  "text": "Client: Hi, who are you?\nAI: I am Vincent and I am barista!\nClient: What do you do every day?\nAI:",
+  "max_length": 40,
+  "top_p": 0.7,
+  "top_k": 0,
+  "temperature":1.0
+}
+```
 
 
 For developemnt clone the repository and run on server:
