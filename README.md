@@ -2,11 +2,13 @@ Run GPT-J-6B model (text generation open source GPT-3 analog) for inference on s
 
 First script loads model into video RAM (can take several minutes) and then runs internal HTTP server which is listening on 8080.
 
+# Prerequirements
+
 You can run this image only on instance with 12 GB Video memory and Linux (e.g. Ubuntu) with Docker installed. 
 
-Server machine should have 
+Server machine should have Nvidia Drivers and Docker daemon with NVIDIA Container Toolkit
 
-1. Nvidia Drivers
+## Install Nvidia Drivers
 
 E.g. for Ubuntu 20.04
 ```
@@ -18,23 +20,40 @@ apt install -y ubuntu-drivers-common
 ubuntu-drivers autoinstall
 ```
 
-> Note: Nvidia drivers installation process might be quite challenging, e.g. removing some divers might be required sudo dpkg-divert --remove "/usr/lib/x86_64-linux-gnu/libGL.so.1"
+> Note: Unfortunetely Nvidia drivers installation process might be quite challenging, e.g. there might be some known issues https://bugs.launchpad.net/ubuntu/+source/nvidia-graphics-drivers-390/+bug/1768050/comments/3
 
-3. Docker host with NVIDIA Container Toolkit installed, here is how to install it on Ubuntu:
+After installing and rebooting, to test all is ok please run `nvidia-smi`:
+``` 
+Mon Feb 14 14:28:16 2022       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 510.47.03    Driver Version: 510.47.03    CUDA Version: 11.6     |
+|-------------------------------+----------------------+----------------------+
+```
+
+## Dockerd with NVIDIA Container Toolkit installed:
+
+How to install it on Ubuntu:
 
 ```
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
    && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
    && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 
-apt update && apt upgrade && apt remove -y docker-ce containerd.io
+apt update && apt upgrade && apt remove -y docker-ce containerd.io 
+curl https://get.docker.com | sh && systemctl --now restart docker 
 apt install -y nvidia-docker2
-curl https://get.docker.com | sh && systemctl --now restart docker
 ```
 
-If you are using docker.io from repositories, you will get `docker: Error response from daemon: could not select device driver "" with capabilities: [[gpu]]`
+To test that CUDA in docker works run :
 
-Docker command to run image:
+```
+docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+```
+
+If all was installed correctly it should show same pseudo-table as in previous section. If you have no NVIDIA Container Toolkit you will get `docker: Error response from daemon: could not select device driver "" with capabilities: [[gpu]]` 
+
+
+# Docker command to run image:
 
 ```
 docker run -p8080:8080 --gpus all --rm -it devforth/gpt-j-6b-gpu
