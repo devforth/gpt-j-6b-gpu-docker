@@ -4,11 +4,21 @@ First script loads model into video RAM (can take several minutes) and then runs
 
 You can run this image only on instance with 12 GB Video memory and Linux (e.g. Ubuntu) with Docker installed. 
 
+Server machine should have Docker host with NVIDIA Container Toolkit installed, here is how to install it on Ubuntu:
+
+```
+curl https://get.docker.com | sh && sudo systemctl --now enable docker
+```
+
+If you are using docker.io from repositories, you will get `docker: Error response from daemon: could not select device driver "" with capabilities: [[gpu]]`
+
 Docker command to run image:
 
 ```
 docker run -p8080:8080 --gpus all --rm -it devforth/gpt-j-6b-gpu
 ```
+
+
 
 > `--gpus all` passes GPU into docker container, so internal bundled cuda instance will smoothly use it 
 
