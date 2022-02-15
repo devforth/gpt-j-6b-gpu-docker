@@ -10,6 +10,15 @@ Server machine should have Nvidia Drivers and Docker daemon with NVIDIA Containe
 
 ## Install Nvidia Drivers
 
+You can skip this step if you already have `nvidia-smi` and it outputs this:
+
+``` 
+Mon Feb 14 14:28:16 2022       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 510.47.03    Driver Version: 510.47.03    CUDA Version: 11.6     |
+|-------------------------------+----------------------+----------------------+
+```
+
 E.g. for Ubuntu 20.04
 ```
 apt purge *nvidia*
@@ -22,13 +31,9 @@ ubuntu-drivers autoinstall
 
 > Note: Unfortunetely Nvidia drivers installation process might be quite challenging, e.g. there might be some known issues https://bugs.launchpad.net/ubuntu/+source/nvidia-graphics-drivers-390/+bug/1768050/comments/3
 
-After installing and rebooting, to test all is ok please run `nvidia-smi`:
-``` 
-Mon Feb 14 14:28:16 2022       
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 510.47.03    Driver Version: 510.47.03    CUDA Version: 11.6     |
-|-------------------------------+----------------------+----------------------+
-```
+After installing and rebooting, to test all is ok please run `nvidia-smi`.
+
+
 
 ## Dockerd with NVIDIA Container Toolkit installed:
 
@@ -39,10 +44,11 @@ distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
    && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
    && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 
-apt update && apt upgrade && apt remove -y docker-ce containerd.io 
+apt update && apt -y upgrade && apt remove -y docker-ce containerd.io 
 curl https://get.docker.com | sh && systemctl --now restart docker 
 apt install -y nvidia-docker2
 ```
+And reboot server.
 
 To test that CUDA in docker works run :
 
@@ -50,7 +56,8 @@ To test that CUDA in docker works run :
 docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
 ```
 
-If all was installed correctly it should show same pseudo-table as in previous section. If you have no NVIDIA Container Toolkit you will get `docker: Error response from daemon: could not select device driver "" with capabilities: [[gpu]]` 
+If all was installed correctly it should show same pseudo-table as in previous section.
+If you have no NVIDIA Container Toolkit or did not reboot server yet you will get `docker: Error response from daemon: could not select device driver "" with capabilities: [[gpu]]` 
 
 
 # Docker command to run image:
