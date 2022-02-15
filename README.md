@@ -4,19 +4,21 @@ First script loads model into video RAM (can take several minutes) and then runs
 
 # Prerequirements
 
-You can run this image only on instance with 12 GB Video memory and Linux (e.g. Ubuntu) with Docker installed. 
+You can run this image only on instance with 16 GB Video memory and Linux (e.g. Ubuntu)
 
-Server machine should have Nvidia Drivers and Docker daemon with NVIDIA Container Toolkit
+Server machine should have NVIDIA Driver and Docker daemon with NVIDIA Container Toolkit. See below.
 
 ## Install Nvidia Drivers
 
-You can skip this step if you already have `nvidia-smi` and it outputs this:
+You can skip this step if you already have `nvidia-smi` and it outputs the table with CUDA Version:
 
 ``` 
 Mon Feb 14 14:28:16 2022       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 510.47.03    Driver Version: 510.47.03    CUDA Version: 11.6     |
 |-------------------------------+----------------------+----------------------+
+| ...
+
 ```
 
 E.g. for Ubuntu 20.04
@@ -34,30 +36,29 @@ ubuntu-drivers autoinstall
 After installing and rebooting, to test all is ok please run `nvidia-smi`.
 
 
-
-## Dockerd with NVIDIA Container Toolkit installed:
+## Install Dockerd with NVIDIA Container Toolkit installed:
 
 How to install it on Ubuntu:
 
 ```
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-   && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
-   && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+   && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | apt-key add - \
+   && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | tee /etc/apt/sources.list.d/nvidia-docker.list
 
-apt update && apt -y upgrade && apt remove -y docker-ce containerd.io 
+apt update && apt -y upgrade
 curl https://get.docker.com | sh && systemctl --now restart docker 
 apt install -y nvidia-docker2
 ```
 And reboot server.
 
-To test that CUDA in docker works run :
+To test that CUDA in Docker works run :
 
 ```
 docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
 ```
 
-If all was installed correctly it should show same pseudo-table as in previous section.
-If you have no NVIDIA Container Toolkit or did not reboot server yet you will get `docker: Error response from daemon: could not select device driver "" with capabilities: [[gpu]]` 
+If all was installed correctly it should show same table as `nvidia-smi` on host.
+If you have no NVIDIA Container Toolkit or did not reboot server yet you would get `docker: Error response from daemon: could not select device driver "" with capabilities: [[gpu]]` 
 
 
 # Docker command to run image:
