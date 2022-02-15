@@ -2,11 +2,13 @@ Run GPT-J-6B model (text generation open source GPT-3 analog) for inference on s
 
 First script loads model into video RAM (can take several minutes) and then runs internal HTTP server which is listening on 8080.
 
-# Prerequirements
+# Prerequirements to run GPT-J on GPU
 
 You can run this image only on instance with 16 GB Video memory and Linux (e.g. Ubuntu)
 
 Server machine should have NVIDIA Driver and Docker daemon with NVIDIA Container Toolkit. See below.
+
+> Tested on NVIDIA Titan RTX, NVIDIA Tesla P100, Not worked: NVIDIA RTX 3090 (not supported due cuda error)
 
 ## Install Nvidia Drivers
 
@@ -31,12 +33,11 @@ apt install -y ubuntu-drivers-common
 ubuntu-drivers autoinstall
 ```
 
-> Note: Unfortunetely Nvidia drivers installation process might be quite challenging, e.g. there might be some known issues https://bugs.launchpad.net/ubuntu/+source/nvidia-graphics-drivers-390/+bug/1768050/comments/3
+> Note: Unfortunetely NVIDIA drivers installation process might be quite challenging sometimes, e.g. there might be some known issues https://bugs.launchpad.net/ubuntu/+source/nvidia-graphics-drivers-390/+bug/1768050/comments/3, Google helps a lot
 
-After installing and rebooting, to test all is ok please run `nvidia-smi`.
+After installing and rebooting, test it with `nvidia-smi`, you should see table.
 
-
-## Install Dockerd with NVIDIA Container Toolkit installed:
+## Install Dockerd with NVIDIA Container Toolkit:
 
 How to install it on Ubuntu:
 
