@@ -8,7 +8,9 @@ You can run this image only on instance with 16 GB Video memory and Linux (e.g. 
 
 Server machine should have NVIDIA Driver and Docker daemon with NVIDIA Container Toolkit. See below.
 
-> Tested on NVIDIA Titan RTX, NVIDIA Tesla P100, Not worked: NVIDIA RTX 3090 (not supported due cuda error)
+> Tested on NVIDIA Titan RTX, NVIDIA Tesla P100, 
+> Not supported: NVIDIA RTX 3090, RTX A5000, RTX A6000. Not supported Cuda+PyTorch coombination:
+> CUDA capability sm_86 is not supported, PyTorch install supports CUDA capabilities sm_37 sm_50 sm_60 sm_70 (we use latest PyTorch during image build)
 
 ## Install Nvidia Drivers
 
@@ -55,7 +57,7 @@ And reboot server.
 To test that CUDA in Docker works run :
 
 ```
-docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+docker run --rm --gpus all nvidia/cuda:11.1-base nvidia-smi
 ```
 
 If all was installed correctly it should show same table as `nvidia-smi` on host.
