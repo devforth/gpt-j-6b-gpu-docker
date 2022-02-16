@@ -81,7 +81,7 @@ Body:
 
 {
   "text": "Client: Hi, who are you?\nAI: I am Vincent and I am barista!\nClient: What do you do every day?\nAI:",
-  "max_length": 40,
+  "generate_tokens_limit": 40,
   "top_p": 0.7,
   "top_k": 0,
   "temperature":1.0

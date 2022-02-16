@@ -52,10 +52,14 @@ def eval(input):
     t1 = datetime.now()
 
     input_ids = tokenizer.encode(str(input.text), return_tensors='pt').cuda()
+    token_count = input_ids.size(dim=1)
+    if token_count + input.generate_tokens_limit > 2048:
+        raise Exception(f"This model can't generate more then 2048 tokens, you passed {token_count} "+
+            f"input tokens and requested to generate {input.generate_tokens_limit} tokens") 
     output = model.generate(
         input_ids,
         do_sample=True,
-        max_length=input.max_length,
+        max_length=token_count + input.generate_tokens_limit,
         top_p=input.top_p,
         top_k=input.top_k,
         temperature=input.temperature,
