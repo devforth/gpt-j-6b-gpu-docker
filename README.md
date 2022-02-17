@@ -9,8 +9,8 @@ You can run this image only on instance with 16 GB Video memory and Linux (e.g. 
 Server machine should have NVIDIA Driver and Docker daemon with NVIDIA Container Toolkit. See below.
 
 > Tested on NVIDIA Titan RTX, NVIDIA Tesla P100, 
-> Not supported: NVIDIA RTX 3090, RTX A5000, RTX A6000. Not supported Cuda+PyTorch coombination:
-> CUDA capability sm_86 is not supported, PyTorch install supports CUDA capabilities sm_37 sm_50 sm_60 sm_70 (we use latest PyTorch during image build)
+> Not supported: NVIDIA RTX 3090, RTX A5000, RTX A6000. Reasone Cuda+PyTorch coombination:
+> CUDA capability sm_86 is not supported, PyTorch install supports CUDA capabilities sm_37 sm_50 sm_60 sm_70 (we use latest PyTorch during image build), [match sm_x to video card](https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/)
 
 ## Install Nvidia Drivers
 
