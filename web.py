@@ -7,7 +7,7 @@ app = FastAPI()
 class Input(BaseModel):
     generate_tokens_limit: int = 100
     top_p: float = 0.7
-    top_k: float = 0
+    top_k: int = 0
     temperature: float = 1.0
     text: str
 
