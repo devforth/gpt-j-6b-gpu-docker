@@ -1,3 +1,5 @@
+[![Ask AI](http://tluma.ai/badge)](http://tluma.ai/ask-ai/devforth/gpt-j-6b-gpu-docker)
+
 Run GPT-J-6B model (text generation open source GPT-3 analog) for inference on server with GPU using zero-dependency Docker image. 
 
 First script loads model into video RAM (can take several minutes) and then runs internal HTTP server which is listening on 8080.
